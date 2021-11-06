@@ -13,14 +13,18 @@ if [ -z "${TEMP}" ]; then
   fi
 fi
 
+if [ "${VERSION}" == 'latest' ] ; then
+  VERSION=$(curl -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*")
+fi
+
 install_osx() {
     brew install infer
 }
 
 install_linux() {
     cd "${TEMP}"
-    curl -sL "https://github.com/facebook/infer/releases/download/${INFER_VERSION}/infer-linux64-${INFER_VERSION}.tar.xz" | tar xvJ
-    echo "${TEMP}/infer-linux64-${INFER_VERSION}/bin" >>"${GITHUB_PATH}"
+    curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar xvJ
+    echo "${TEMP}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
 }
 
 install_windows() {
