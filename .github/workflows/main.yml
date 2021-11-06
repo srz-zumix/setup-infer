@@ -1,0 +1,17 @@
+name: GitHub Actions - setup check
+on:
+  pull_request:
+
+jobs:
+  setup-check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: 
+          - ubuntu-latest
+          - macos-latest
+    steps:
+    - name: clone
+      uses: actions/checkout@v2
+    - uses: ./
+    - run: infer --help

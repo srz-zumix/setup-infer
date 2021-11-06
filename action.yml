@@ -1,0 +1,22 @@
+name: 'Setup infer'
+description: 'This action sets up infer'
+inputs:
+  infer_version:
+    description: 'infer version. [latest,vX.Y.Z]'
+    default: 'latest'
+runs:
+  using: 'composite'
+  steps:
+    - run: $GITHUB_ACTION_PATH/install.sh
+      shell: bash
+      env:
+        INFER_VERSION: ${{ inputs.infer_version }}
+        INFER_TEMPDIR: ${{ runner.temp }}
+    - run: |
+        echo "::group::📖 infer -h"
+        infer -h 2>&1 || true
+        echo "::endgroup::"
+      shell: bash
+branding:
+  icon: 'book'
+  color: 'blue'
