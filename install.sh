@@ -40,5 +40,5 @@ install() {
     fi
 }
 echo '::group:::blue_book: Installing infer ...'
-install()
+install
 echo '::endgroup::'
