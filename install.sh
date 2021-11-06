@@ -22,7 +22,7 @@ install_osx() {
 }
 
 install_linux() {
-    cd "${TEMP}"
+    cd "${TEMP}" || exit
     curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar xvJ
     echo "${TEMP}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
 }
@@ -43,6 +43,6 @@ install() {
         install_windows
     fi
 }
-echo '::group:::blue_book: Installing infer ...'
+echo '::group::📖 Installing infer ...'
 install
 echo '::endgroup::'
