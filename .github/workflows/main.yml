@@ -1,9 +1,9 @@
-name: GitHub Actions - install check
+name: GitHub Actions - setup check
 on:
   pull_request:
 
 jobs:
-  install-check:
+  setup-check:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
