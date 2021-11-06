@@ -30,13 +30,13 @@ install_windows() {
 
 install() {
     if is_osx; then
-        install_osx()
+        install_osx
     fi
     if is_linux; then
-        install_linux()
+        install_linux
     fi
     if is_windows; then
-        install_windows()
+        install_windows
     fi
 }
 echo '::group:::blue_book: Installing infer ...'

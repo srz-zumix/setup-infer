@@ -4,7 +4,7 @@ lower() {
     if [ $# -eq 0 ]; then
         cat <&0
     elif [ $# -eq 1 ]; then
-        if [ -f "$1" -a -r "$1" ]; then
+        if [ -f "$1" ] && [ -r "$1" ]; then
             cat "$1"
         else
             echo "$1"
