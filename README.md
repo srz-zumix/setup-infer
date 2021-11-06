@@ -20,7 +20,7 @@ inputs:
 
 ```yaml
 steps:
-  - uses: srzzumix/setup-infer@v1
+  - uses: srz-zumix/setup-infer@v1
   - run: infer --version
 ```
 
@@ -30,7 +30,7 @@ NOTE: macOS always install latest
 
 ```yaml
 steps:
-  - uses: srzzumix/setup-infer@v1
+  - uses: srz-zumix/setup-infer@v1
     with:
       infer_version: v1.0.0
   - run: infer --version
