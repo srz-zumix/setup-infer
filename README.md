@@ -1,5 +1,8 @@
 # setup-infer
 
+[![GitHub Actions - setup check](https://github.com/srz-zumix/setup-infer/actions/workflows/main.yml/badge.svg)](https://github.com/srz-zumix/setup-infer/actions/workflows/main.yml)
+[![GitHub Actions - reviewdog](https://github.com/srz-zumix/setup-infer/actions/workflows/reviewdog.yml/badge.svg)](https://github.com/srz-zumix/setup-infer/actions/workflows/reviewdog.yml)
+
 This action installs :blue_book: [infer][].
 
 ## Input
