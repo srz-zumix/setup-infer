@@ -23,8 +23,6 @@ steps:
 
 ### Specify infer version
 
-NOTE: macOS always install latest
-
 ```yaml
 steps:
   - uses: srz-zumix/setup-infer@v1
