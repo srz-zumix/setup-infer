@@ -4,11 +4,17 @@ inputs:
   infer_version:
     description: 'infer version. [latest,vX.Y.Z]'
     default: 'latest'
+outputs:
+  infer_version:
+    description: 'installed infer version'
+    value: ${{ steps.install.outputs.version }}
+
 runs:
   using: 'composite'
   steps:
     - run: $GITHUB_ACTION_PATH/install.sh
       shell: bash
+      id: install
       env:
         INFER_VERSION: ${{ inputs.infer_version }}
         INFER_TEMPDIR: ${{ runner.temp }}
@@ -17,6 +23,7 @@ runs:
         infer -h 2>&1 || true
         echo "::endgroup::"
       shell: bash
+
 branding:
   icon: 'book'
-  color: 'blue'
+  color: 'purple'
