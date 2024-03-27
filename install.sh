@@ -45,4 +45,5 @@ install() {
 }
 echo '::group::📖 Installing infer ...'
 install
+echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
 echo '::endgroup::'

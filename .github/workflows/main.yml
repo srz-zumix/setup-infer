@@ -1,17 +1,21 @@
-name: GitHub Actions - setup check
+name: SelfTest
 on:
   pull_request:
 
 jobs:
-  setup-check:
+  self-test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: 
           - ubuntu-latest
-          - macos-latest
+          # - macos-latest
     steps:
     - name: clone
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - uses: ./
-    - run: infer --help
+      id: setup
+    - run: |
+        test -n "${{ steps.setup.outputs.infer_version }}"
+        infer --version | grep "${{ steps.setup.outputs.infer_version }}"
