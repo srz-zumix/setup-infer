@@ -44,7 +44,7 @@ version-resolver:
       - 'security'
   default: minor
 template: |
-  [Compare $PREVIOUS_TAG with v$RESOLVED_VERSION](https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION))
+  [Compare $PREVIOUS_TAG with v$RESOLVED_VERSION](https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION)
 
   ## Changes
 
