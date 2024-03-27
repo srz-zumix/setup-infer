@@ -4,27 +4,39 @@ VERSION="${INFER_VERSION:-latest}"
 
 source "${GITHUB_ACTION_PATH}/utils.sh"
 
-TEMP="${INFER_TEMPDIR}"
-if [ -z "${TEMP}" ]; then
-  if [ -n "${RUNNER_TEMP}" ]; then
-    TEMP="${RUNNER_TEMP}"
+INFER_TEMPDIR="${INFER_TEMPDIR}"
+if [ -z "${INFER_TEMPDIR}" ]; then
+  if [ -n "${RUNNER_INFER_TEMPDIR}" ]; then
+    INFER_TEMPDIR="${RUNNER_INFER_TEMPDIR}"
   else
-    TEMP="$(mktemp -d)"
+    INFER_TEMPDIR="$(mktemp -d)"
   fi
 fi
+
+INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
+
+mkdir -p "${INFER_INSTALLDIR}"
 
 if [ "${VERSION}" == 'latest' ] ; then
   VERSION=$(curl -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*")
 fi
 
 install_osx() {
-    brew install infer
+    if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
+      mkdir -p "${INFER_TEMPDIR}/${VERSION}"
+      cd "${INFER_INSTALLDIR}/${VERSION}"
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.xz" | tar xvJ
+      sh ./build-infer.sh clang
+    fi
+    echo "${INFER_TEMPDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
 }
 
 install_linux() {
-    cd "${TEMP}" || exit
-    curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar xvJ
-    echo "${TEMP}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
+    if [ ! -f "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin/infer" ]; then
+      cd "${INFER_INSTALLDIR}" || exit
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar xvJ
+    fi
+    echo "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
 }
 
 install_windows() {
