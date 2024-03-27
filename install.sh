@@ -1,13 +1,14 @@
 #!/bin/bash
+set -euo pipefail
 
-VERSION="${INFER_VERSION:-latest}"
+VERSION="${INPUTS_INFER_VERSION:-latest}"
 
 source "${GITHUB_ACTION_PATH}/utils.sh"
 
-INFER_TEMPDIR="${INFER_TEMPDIR}"
+INFER_TEMPDIR="${INPUTS_INFER_TEMPDIR:-}"
 if [ -z "${INFER_TEMPDIR}" ]; then
-  if [ -n "${RUNNER_INFER_TEMPDIR}" ]; then
-    INFER_TEMPDIR="${RUNNER_INFER_TEMPDIR}"
+  if [ -n "${RUNNER_TEMP}" ]; then
+    INFER_TEMPDIR="${RUNNER_TEMP}"
   else
     INFER_TEMPDIR="$(mktemp -d)"
   fi
@@ -24,7 +25,7 @@ fi
 install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
       mkdir -p "${INFER_TEMPDIR}/${VERSION}"
-      cd "${INFER_INSTALLDIR}/${VERSION}"
+      cd "${INFER_INSTALLDIR}/${VERSION}" || exit
       curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.xz" | tar xvJ
       sh ./build-infer.sh clang
     fi

@@ -16,7 +16,7 @@ runs:
       shell: bash
       id: install
       env:
-        INFER_VERSION: ${{ inputs.infer_version }}
+        INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
     - run: |
         echo "::group::📖 infer -h"
         infer -h 2>&1 || true
