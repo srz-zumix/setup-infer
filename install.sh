@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euox pipefail
 
 VERSION="${INPUTS_INFER_VERSION:-latest}"
 
