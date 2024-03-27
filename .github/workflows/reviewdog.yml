@@ -1,4 +1,4 @@
-name: GitHub Actions - reviewdog
+name: reviewdog
 on:
   pull_request:
 
