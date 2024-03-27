@@ -17,4 +17,4 @@ jobs:
     - uses: ./
       id: setup
     - run: |
-        infer --help | grep "${{ steps.setup.outputs.version }}"
+        infer --help | grep "${{ steps.setup.outputs.infer_version }}"
