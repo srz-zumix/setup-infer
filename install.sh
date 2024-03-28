@@ -27,12 +27,13 @@ if [ "${VERSION}" == 'latest' ] ; then
 fi
 
 install_osx() {
-    if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
+    VERSION_NUMBER="${VERSION##v}"
+    if [ ! -f "${INFER_INSTALLDIR}/infer-${VERSION_NUMBER}/infer/bin/infer" ]; then
       cd "${INFER_INSTALLDIR}/" || exit
       curl -sL "https://github.com/facebook/infer/archive/refs/tags/${VERSION}.tar.gz" | tar -zxv
-      sh "./infer-${VERSION}/build-infer.sh" clang
+      sh "./infer-${VERSION_NUMBER}/build-infer.sh" clang
     fi
-    echo "${INFER_INSTALLDIR}/infer-${VERSION}/infer/bin" >>"${GITHUB_PATH}"
+    echo "${INFER_INSTALLDIR}/infer-${VERSION_NUMBER}/infer/bin" >>"${GITHUB_PATH}"
 }
 
 install_linux() {
