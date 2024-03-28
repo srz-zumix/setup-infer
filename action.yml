@@ -12,6 +12,11 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - name: Set-up OCaml
+      if: runner.os == 'macOS'
+      uses: ocaml/setup-ocaml@v2
+      with:
+        ocaml-compiler: "5.1"
     - run: $GITHUB_ACTION_PATH/install.sh
       shell: bash
       id: install
