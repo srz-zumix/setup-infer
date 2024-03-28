@@ -26,7 +26,7 @@ install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
       mkdir -p "${INFER_INSTALLDIR}/${VERSION}"
       cd "${INFER_INSTALLDIR}/${VERSION}" || exit
-      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.xz" | tar -zxv
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.xz" | tar zxv
       sh ./build-infer.sh clang
     fi
     echo "${INFER_INSTALLDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
@@ -35,7 +35,7 @@ install_osx() {
 install_linux() {
     if [ ! -f "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin/infer" ]; then
       cd "${INFER_INSTALLDIR}" || exit
-      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.gz" | tar -xvJ
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.gz" | tar xvJ
     fi
     echo "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
 }
