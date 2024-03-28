@@ -9,13 +9,16 @@ resolve_version() {
     if [ -n "${VERSION}" ]; then
       return
     fi
+    echo "Attempt ${i} failed"
   done
   echo "::error:: Failed to get latest version from GitHub API"
   exit 1
 }
 
 if [ "${VERSION}" == 'latest' ] ; then
+  echo '::group::📖 Resolve infer version ...'
   resolve_version
+  echo '::endgroup::'
 fi
 
 echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"

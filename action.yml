@@ -27,7 +27,7 @@ runs:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
       run: |
         curl -sSL -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
-        OCAML_VERSION=$(grep -oE "ocaml-variants.*" "${{ runner.temp }}/build-infer.sh" | grep -oE "[0-9.]+" | head -n 1)
+        OCAML_VERSION=$(grep -oE "ocaml-variants.*" "${{ runner.temp }}/build-infer.sh" | grep -oE "[0-9][0-9.]+" | head -n 1)
         echo "ocaml-version=${OCAML_VERSION}" >> "${GITHUB_OUTPUT}"
     - name: Set-up OCaml
       if: runner.os == 'macOS'
