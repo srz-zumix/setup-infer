@@ -24,12 +24,12 @@ fi
 
 install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
-      mkdir -p "${INFER_TEMPDIR}/${VERSION}"
+      mkdir -p "${INFER_INSTALLDIR}/${VERSION}"
       cd "${INFER_INSTALLDIR}/${VERSION}" || exit
       curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.xz" | tar xvJ
       sh ./build-infer.sh clang
     fi
-    echo "${INFER_TEMPDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
+    echo "${INFER_INSTALLDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
 }
 
 install_linux() {
