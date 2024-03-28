@@ -11,6 +11,8 @@ categories:
   - title: 'Dependency'
     labels:
       - 'dependency'
+      - 'dependencies'
+      - 'renovate'
   - title: 'Fixes'
     labels:
       - 'fix'
@@ -25,8 +27,7 @@ categories:
     labels:
       - 'CI'
 exclude-labels:
-  - 'dependencies'
-  - 'renovate'
+  - 'invalid'
   - 'internal-fix'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
