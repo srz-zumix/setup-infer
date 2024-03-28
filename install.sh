@@ -14,6 +14,7 @@ if [ -z "${INFER_TEMPDIR}" ]; then
 fi
 
 INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
+BUILD_OPTIONS=(${INFER_BUILD_OPTIONS:-})
 
 mkdir -p "${INFER_INSTALLDIR}"
 
@@ -23,7 +24,8 @@ install_osx() {
       cd "${INFER_INSTALLDIR}" || exit
       curl -sL "https://github.com/facebook/infer/archive/refs/tags/${VERSION}.tar.gz" | tar -zxv
       cd "infer-${VERSION_NUMBER}" || exit
-      sh "./build-infer.sh" clang
+      BUILD_OPTIONS+=("clnag")
+      sh "./build-infer.sh" "${BUILD_OPTIONS[@]}"
     fi
     echo "${INFER_INSTALLDIR}/infer-${VERSION_NUMBER}/infer/bin" >>"${GITHUB_PATH}"
 }

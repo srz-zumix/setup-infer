@@ -27,18 +27,21 @@ runs:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
       run: |
         curl -sSL -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
-        OCAML_VERSION=$(grep -oE "ocaml-variants.*" "${{ runner.temp }}/build-infer.sh" | grep -oE "[0-9][0-9.]+" | head -n 1)
-        echo "ocaml-version=${OCAML_VERSION}" >> "${GITHUB_OUTPUT}"
+        INFER_OPAM_DEFAULT_SWITCH=$(grep -oE "INFER_OPAM_DEFAULT_SWITCH.*" "${{ runner.temp }}/build-infer.sh" | head -n 1)
+        if [ -n "${INFER_OPAM_DEFAULT_SWITCH}" ]; then
+          echo "${INFER_OPAM_DEFAULT_SWITCH}" >> "${GITHUB_OUTPUT}"
+        fi
     - name: Set-up OCaml
       if: runner.os == 'macOS'
       uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-compiler: "${{ steps.build-script.outputs.ocaml-version }}"
+        ocaml-compiler: "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
     - name: Install Infer
       shell: bash
       id: install
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+        INFER_BUILD_OPTIONS: "--user-opam-switch"
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
     - name: Infer Help
