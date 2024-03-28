@@ -14,6 +14,7 @@ if [ -z "${INFER_TEMPDIR}" ]; then
 fi
 
 INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
+# shellcheck disable=SC2206
 BUILD_OPTIONS=(${INFER_BUILD_OPTIONS:-})
 
 mkdir -p "${INFER_INSTALLDIR}"
