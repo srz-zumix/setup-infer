@@ -19,17 +19,20 @@ INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
 mkdir -p "${INFER_INSTALLDIR}"
 
 if [ "${VERSION}" == 'latest' ] ; then
-  VERSION=$(curl -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*")
+  VERSION=$(curl --retry 3 -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*")
+  if [ -z "${VERSION}" ]; then
+    echo "::error:: Failed to get latest version from GitHub API"
+    exit 1
+  fi
 fi
 
 install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
-      mkdir -p "${INFER_INSTALLDIR}/${VERSION}"
-      cd "${INFER_INSTALLDIR}/${VERSION}" || exit
+      cd "${INFER_INSTALLDIR}/" || exit
       curl -sL "https://github.com/facebook/infer/archive/refs/tags/${VERSION}.tar.gz" | tar -zxv
-      sh ./build-infer.sh clang
+      sh "./infer-${VERSION}/build-infer.sh" clang
     fi
-    echo "${INFER_INSTALLDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
+    echo "${INFER_INSTALLDIR}/infer-${VERSION}/infer/bin" >>"${GITHUB_PATH}"
 }
 
 install_linux() {
