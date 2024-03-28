@@ -12,21 +12,41 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - name: Resolve infer version
+      shell: bash
+      id: resolve
+      env:
+        INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
+      run: |
+        "${GITHUB_ACTION_PATH}/resolve.sh"
+    - name: Get build script
+      if: runner.os == 'macOS'
+      shell: bash
+      id: build-script
+      env:
+        INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+      run: |
+        curl -sSL -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
+        OCAML_VERSION=$(grep -oE "ocaml-variants.*" "${{ runner.temp }}/build-infer.sh" | grep -oE "[0-9.]+" | head -n 1)
+        echo "ocaml-version=${OCAML_VERSION}" >> "${GITHUB_OUTPUT}"
     - name: Set-up OCaml
       if: runner.os == 'macOS'
       uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-compiler: "5.1"
-    - run: $GITHUB_ACTION_PATH/install.sh
+        ocaml-compiler: "${{ steps.build-script.outputs.ocaml-version }}"
+    - name: Install Infer
       shell: bash
       id: install
       env:
-        INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
-    - run: |
+        INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+      run: |
+        "${GITHUB_ACTION_PATH}/install.sh"
+    - name: Infer Help
+      shell: bash
+      run: |
         echo "::group::📖 infer -h"
         infer -h 2>&1 || true
         echo "::endgroup::"
-      shell: bash
 
 branding:
   icon: 'book'

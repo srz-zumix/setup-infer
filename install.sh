@@ -1,9 +1,8 @@
 #!/bin/bash
 set -euox pipefail
 
-VERSION="${INPUTS_INFER_VERSION:-latest}"
-
-source "${GITHUB_ACTION_PATH}/utils.sh"
+source "${GITHUB_ACTION_PATH:-.}/utils.sh"
+source "${GITHUB_ACTION_PATH:-.}/resolve.sh"
 
 INFER_TEMPDIR="${INPUTS_INFER_TEMPDIR:-}"
 if [ -z "${INFER_TEMPDIR}" ]; then
@@ -17,14 +16,6 @@ fi
 INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
 
 mkdir -p "${INFER_INSTALLDIR}"
-
-if [ "${VERSION}" == 'latest' ] ; then
-  VERSION=$(curl --retry 3 -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*" || true)
-  if [ -z "${VERSION}" ]; then
-    echo "::error:: Failed to get latest version from GitHub API"
-    exit 1
-  fi
-fi
 
 install_osx() {
     VERSION_NUMBER="${VERSION##v}"
@@ -62,5 +53,4 @@ install() {
 }
 echo '::group::📖 Installing infer ...'
 install
-echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
 echo '::endgroup::'
