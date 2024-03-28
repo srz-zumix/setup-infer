@@ -26,7 +26,7 @@ install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/${VERSION}/infer/bin/infer" ]; then
       mkdir -p "${INFER_INSTALLDIR}/${VERSION}"
       cd "${INFER_INSTALLDIR}/${VERSION}" || exit
-      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}.tar.gz" | tar -zxv
+      curl -sL "https://github.com/facebook/infer/archive/refs/tags/${VERSION}.tar.gz" | tar -zxv
       sh ./build-infer.sh clang
     fi
     echo "${INFER_INSTALLDIR}/${VERSION}/infer/bin" >>"${GITHUB_PATH}"
