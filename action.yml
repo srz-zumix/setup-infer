@@ -26,7 +26,7 @@ runs:
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
       run: |
-        curl -sSL -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
+        curl -sSL --retry 3 -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
         INFER_OPAM_DEFAULT_SWITCH=$(grep -oE "INFER_OPAM_DEFAULT_SWITCH.*" "${{ runner.temp }}/build-infer.sh" | head -n 1)
         if [ -n "${INFER_OPAM_DEFAULT_SWITCH}" ]; then
           printenv INFER_OPAM_DEFAULT_SWITCH >> "${GITHUB_OUTPUT}"
