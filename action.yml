@@ -21,7 +21,7 @@ runs:
         "${GITHUB_ACTION_PATH}/resolve.sh"
     - name: Get build script
       if: runner.os == 'macOS'
-      shell: bash
+      shell: bash -ex {0}
       id: build-script
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
