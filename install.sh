@@ -25,8 +25,9 @@ install_osx() {
       cd "${INFER_INSTALLDIR}" || exit
       curl -sL "https://github.com/facebook/infer/archive/refs/tags/${VERSION}.tar.gz" | tar -zx
       cd "infer-${VERSION_NUMBER}" || exit
+      BUILD_OPTIONS+=("-y")
       BUILD_OPTIONS+=("clnag")
-      sh "./build-infer.sh" "${BUILD_OPTIONS[@]}"
+      bash "./build-infer.sh" "${BUILD_OPTIONS[@]}"
     fi
     echo "${INFER_INSTALLDIR}/infer-${VERSION_NUMBER}/infer/bin" >>"${GITHUB_PATH}"
 }

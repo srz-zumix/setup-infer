@@ -41,7 +41,7 @@ runs:
       id: install
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
-        INFER_BUILD_OPTIONS: "--user-opam-switch"
+        INFER_BUILD_OPTIONS: --user-opam-switch
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
     - name: Infer Help
