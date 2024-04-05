@@ -27,7 +27,7 @@ install_osx() {
       cd "infer-${VERSION_NUMBER}" || exit
       BUILD_OPTIONS+=("-y")
       BUILD_OPTIONS+=("clnag")
-      bash "./build-infer.sh" "${BUILD_OPTIONS[@]}"
+      ./build-infer.sh "${BUILD_OPTIONS[@]}"
     fi
     echo "${INFER_INSTALLDIR}/infer-${VERSION_NUMBER}/infer/bin" >>"${GITHUB_PATH}"
 }
