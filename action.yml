@@ -38,6 +38,7 @@ runs:
         ocaml-compiler: "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
     - name: Opam switch set
       if: runner.os == 'macOS'
+      shell: bash
       run: |
         opam switch set "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
     - name: Install Infer
