@@ -37,6 +37,6 @@ jobs:
 
   update_semver:
     needs: publish_release
-    uses: srz-zumix/setup-infer/.github/workflows/update_semver.yml@main
+    uses: ./.github/workflows/update_semver.yml
     with:
       tag: ${{ needs.publish_release.outputs.tag_name }}

@@ -31,6 +31,9 @@ runs:
         if [ -n "${INFER_OPAM_DEFAULT_SWITCH}" ]; then
           echo "${INFER_OPAM_DEFAULT_SWITCH//\"/}" >> "${GITHUB_OUTPUT}"
         fi
+    - name: Set-up automake
+      if: runner.os == 'macOS'
+      uses: srz-zumix/setup-automake@v0
     - name: Set-up OCaml
       if: runner.os == 'macOS'
       uses: ocaml/setup-ocaml@v2
