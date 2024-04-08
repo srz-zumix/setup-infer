@@ -16,6 +16,7 @@ jobs:
       uses: actions/checkout@v4
     - uses: ./
       id: setup
+      timeout-minutes: 1440
     - run: |
         test -n "${{ steps.setup.outputs.infer_version }}"
         infer --version | grep "${{ steps.setup.outputs.infer_version }}"
