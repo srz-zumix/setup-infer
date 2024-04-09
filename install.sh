@@ -30,9 +30,9 @@ install_osx() {
 
       ls "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
       SDK_ROOT="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
-      CPATH="${SDK_ROOT}/usr/include:${CPATH}"
+      CPATH="${SDK_ROOT}/usr/include:${CPATH:-}"
       CPATH="${SDK_ROOT}/usr/include/c++/v1:${CPATH}"
-      LIBRARY_PATH="${SDK_ROOT}/usr/lib:${LIBRARY_PATH}"
+      LIBRARY_PATH="${SDK_ROOT}/usr/lib:${LIBRARY_PATH:-}"
 
       export CPATH
       export LIBRARY_PATH
