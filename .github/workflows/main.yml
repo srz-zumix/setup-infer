@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: 
           - ubuntu-latest
-          - macos-latest
+          - macos-14
     steps:
     - name: clone
       uses: actions/checkout@v4
