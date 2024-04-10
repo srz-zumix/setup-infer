@@ -28,14 +28,16 @@ install_osx() {
       BUILD_OPTIONS+=("-y")
       BUILD_OPTIONS+=("clang")
 
-      ls "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
-      SDK_ROOT="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
-      CPATH="${SDK_ROOT}/usr/include:${CPATH:-}"
-      CPATH="${SDK_ROOT}/usr/include/c++/v1:${CPATH}"
-      LIBRARY_PATH="${SDK_ROOT}/usr/lib:${LIBRARY_PATH:-}"
+      export DEVELOPER_DIR="/Applications/Xcode_14.3.1.app"
 
-      export CPATH
-      export LIBRARY_PATH
+      # ls "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+      # SDK_ROOT="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+      # CPATH="${SDK_ROOT}/usr/include:${CPATH:-}"
+      # CPATH="${SDK_ROOT}/usr/include/c++/v1:${CPATH}"
+      # LIBRARY_PATH="${SDK_ROOT}/usr/lib:${LIBRARY_PATH:-}"
+
+      # export CPATH
+      # export LIBRARY_PATH
 
       ./build-infer.sh "${BUILD_OPTIONS[@]}"
     fi
