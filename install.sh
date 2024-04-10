@@ -28,6 +28,7 @@ install_osx() {
       BUILD_OPTIONS+=("-y")
       BUILD_OPTIONS+=("clang")
 
+      ls /Applications
       export DEVELOPER_DIR="/Applications/Xcode_14.3.1.app"
 
       # ls "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
