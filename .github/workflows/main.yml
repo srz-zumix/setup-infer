@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        includw:
+        include:
           - os: ubuntu-latest
             version: latest
           - os: macos-latest
