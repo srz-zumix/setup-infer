@@ -27,9 +27,8 @@ runs:
         INFER_BUILD_OPTIONS: --user-opam-switch
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
-    - uses: ./.github/actions/build-infer-macos
+    - uses: srz-zumix/setup-infer/.github/actions/build-infer-macos@feature/support_macos
       if: runner.os == 'macOS' && steps.install.outputs.installed == 'false'
-      working-directory: ${{ github.action_path }}
       with:
         infer_version: ${{ steps.resolve.outputs.version }}
     - name: Infer Help
