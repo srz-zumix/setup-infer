@@ -19,34 +19,6 @@ runs:
         INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
       run: |
         "${GITHUB_ACTION_PATH}/resolve.sh"
-    - name: Get build script
-      if: runner.os == 'macOS'
-      shell: bash
-      id: build-script
-      env:
-        INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
-      run: |
-        curl -sSL --retry 3 -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
-        INFER_OPAM_DEFAULT_SWITCH=$(grep -oE "INFER_OPAM_DEFAULT_SWITCH.*" "${{ runner.temp }}/build-infer.sh" | head -n 1)
-        if [ -n "${INFER_OPAM_DEFAULT_SWITCH}" ]; then
-          echo "${INFER_OPAM_DEFAULT_SWITCH//\"/}" >> "${GITHUB_OUTPUT}"
-        fi
-    - name: Set-up automake
-      if: runner.os == 'macOS'
-      uses: srz-zumix/setup-automake@v0
-    - name: Set-up OCaml
-      if: runner.os == 'macOS'
-      uses: ocaml/setup-ocaml@v2
-      with:
-        ocaml-compiler: "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
-    - name: Opam switch create
-      if: runner.os == 'macOS'
-      shell: bash
-      env:
-        OPAM_SWITCH: "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
-        OPAM_COMPILER: "${{ steps.build-script.outputs.INFER_OPAM_DEFAULT_SWITCH }}"
-      run: |
-        opam switch create "${OPAM_SWITCH}" "${OPAM_COMPILER}"
     - name: Install Infer
       shell: bash
       id: install
@@ -55,6 +27,11 @@ runs:
         INFER_BUILD_OPTIONS: --user-opam-switch
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
+    - uses: ./.github/actions/build-infer-macos
+      if: runner.os == 'macOS' && steps.install.outputs.installed == 'false'
+      working-directory: ${{ github.action_path }}
+      with:
+        infer_version: ${{ steps.resolve.outputs.version }}
     - name: Infer Help
       shell: bash
       run: |
