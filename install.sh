@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euox pipefail
+set -euo pipefail
 
 source "${GITHUB_ACTION_PATH:-.}/utils.sh"
 source "${GITHUB_ACTION_PATH:-.}/resolve.sh"
@@ -14,7 +14,6 @@ if [ -z "${INFER_TEMPDIR}" ]; then
 fi
 
 INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
-# shellcheck disable=SC2206
 mkdir -p "${INFER_INSTALLDIR}"
 
 install_osx() {
