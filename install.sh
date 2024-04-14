@@ -18,8 +18,7 @@ INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
 mkdir -p "${INFER_INSTALLDIR}"
 
 install_osx() {
-    VERSION_NUMBER="${VERSION##v}"
-    if [ ! -f "${INFER_INSTALLDIR}/infer-osx-${VERSION_NUMBER}/bin/infer" ]; then
+    if [ ! -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
       cd "${INFER_INSTALLDIR}" || exit
       (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx-${VERSION}.tar.xz" | tar -xJ) || \
         echo "installed=false" >> "${GITHUB_OUTPUT}"
