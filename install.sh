@@ -20,12 +20,13 @@ mkdir -p "${INFER_INSTALLDIR}"
 install_osx() {
     if [ ! -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
       cd "${INFER_INSTALLDIR}" || exit
-      (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx-${VERSION}.tar.xz" | tar -xJ) || \
+      (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx-${VERSION}.tar.xz" | tar -xvJ) || \
         echo "installed=false" >> "${GITHUB_OUTPUT}"
-        return
     fi
-    echo "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin" >>"${GITHUB_PATH}"
-    echo "installed=true" >> "${GITHUB_OUTPUT}"
+    if [ -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
+      echo "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin" >>"${GITHUB_PATH}"
+      echo "installed=true" >> "${GITHUB_OUTPUT}"
+    fi
 }
 
 install_linux() {
