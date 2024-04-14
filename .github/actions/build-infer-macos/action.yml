@@ -16,7 +16,7 @@ runs:
       shell: bash
       id: build-script
       env:
-        INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+        INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
       run: |
         curl -sSL --retry 3 -o "${{ runner.temp }}/build-infer.sh" "https://raw.githubusercontent.com/facebook/infer/${INPUTS_INFER_VERSION}/build-infer.sh" 
         INFER_OPAM_DEFAULT_SWITCH=$(grep -oE "INFER_OPAM_DEFAULT_SWITCH.*" "${{ runner.temp }}/build-infer.sh" | head -n 1)
