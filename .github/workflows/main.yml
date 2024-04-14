@@ -21,7 +21,7 @@ jobs:
     - uses: ./
       id: setup
       with:
-        infer-version: ${{ matrix.version }}
+        infer_version: ${{ matrix.version }}
       timeout-minutes: 1440
     - run: |
         test -n "${{ steps.setup.outputs.infer_version }}"
