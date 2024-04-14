@@ -13,8 +13,9 @@ jobs:
             version: latest
           - os: macos-latest
             version: 1.0.0
-          - os: macos-13
-            version: latest
+          # macos only support version 1.0.0
+          # - os: macos-13
+          #   version: latest
     steps:
     - name: clone
       uses: actions/checkout@v4
