@@ -2,8 +2,11 @@ name: reviewdog
 on:
   pull_request:
 
-jobs:
+permissions:
+  contents: read
+  pull-requests: write
 
+jobs:
   markdownlint:
     runs-on: ubuntu-latest
     steps:

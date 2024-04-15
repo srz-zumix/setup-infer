@@ -12,17 +12,31 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - run: $GITHUB_ACTION_PATH/install.sh
+    - name: Resolve infer version
+      shell: bash
+      id: resolve
+      env:
+        INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
+      run: |
+        "${GITHUB_ACTION_PATH}/resolve.sh"
+    - name: Install Infer
       shell: bash
       id: install
       env:
-        INFER_VERSION: ${{ inputs.infer_version }}
-        INFER_TEMPDIR: ${{ runner.temp }}
-    - run: |
+        INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+        INFER_BUILD_OPTIONS: --user-opam-switch
+      run: |
+        "${GITHUB_ACTION_PATH}/install.sh"
+    - uses: srz-zumix/setup-infer/.github/actions/build-infer-macos@feature/support_macos
+      if: runner.os == 'macOS' && steps.install.outputs.installed == 'false'
+      with:
+        infer_version: ${{ steps.resolve.outputs.version }}
+    - name: Infer Help
+      shell: bash
+      run: |
         echo "::group::📖 infer -h"
         infer -h 2>&1 || true
         echo "::endgroup::"
-      shell: bash
 
 branding:
   icon: 'book'

@@ -1,30 +1,40 @@
 #!/bin/bash
+set -euo pipefail
 
-VERSION="${INFER_VERSION:-latest}"
+source "${GITHUB_ACTION_PATH:-.}/utils.sh"
+source "${GITHUB_ACTION_PATH:-.}/resolve.sh"
 
-source "${GITHUB_ACTION_PATH}/utils.sh"
-
-TEMP="${INFER_TEMPDIR}"
-if [ -z "${TEMP}" ]; then
+INFER_TEMPDIR="${INPUTS_INFER_TEMPDIR:-}"
+if [ -z "${INFER_TEMPDIR}" ]; then
   if [ -n "${RUNNER_TEMP}" ]; then
-    TEMP="${RUNNER_TEMP}"
+    INFER_TEMPDIR="${RUNNER_TEMP}"
   else
-    TEMP="$(mktemp -d)"
+    INFER_TEMPDIR="$(mktemp -d)"
   fi
 fi
 
-if [ "${VERSION}" == 'latest' ] ; then
-  VERSION=$(curl -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*")
-fi
+INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
+mkdir -p "${INFER_INSTALLDIR}"
 
 install_osx() {
-    brew install infer
+    if [ ! -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
+      cd "${INFER_INSTALLDIR}" || exit
+      (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx-${VERSION}.tar.xz" | tar -xvJ) || \
+        echo "installed=false" >> "${GITHUB_OUTPUT}"
+    fi
+    if [ -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
+      echo "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin" >>"${GITHUB_PATH}"
+      echo "installed=true" >> "${GITHUB_OUTPUT}"
+    fi
 }
 
 install_linux() {
-    cd "${TEMP}" || exit
-    curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar xvJ
-    echo "${TEMP}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
+    if [ ! -f "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin/infer" ]; then
+      cd "${INFER_INSTALLDIR}" || exit
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar -xJ
+    fi
+    echo "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
+    echo "installed=true" >> "${GITHUB_OUTPUT}"
 }
 
 install_windows() {
@@ -45,5 +55,4 @@ install() {
 }
 echo '::group::📖 Installing infer ...'
 install
-echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
 echo '::endgroup::'

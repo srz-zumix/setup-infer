@@ -8,14 +8,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: 
-          - ubuntu-latest
-          # - macos-latest
+        include:
+          - os: ubuntu-latest
+            version: latest
+          - os: macos-latest
+            version: 1.0.0
+          # macos only support version 1.0.0
+          # - os: macos-13
+          #   version: latest
     steps:
     - name: clone
       uses: actions/checkout@v4
     - uses: ./
       id: setup
+      with:
+        infer_version: ${{ matrix.version }}
+      timeout-minutes: 1440
     - run: |
         test -n "${{ steps.setup.outputs.infer_version }}"
         infer --version | grep "${{ steps.setup.outputs.infer_version }}"
