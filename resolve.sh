@@ -4,15 +4,15 @@ set -euo pipefail
 VERSION_STR="${INPUTS_INFER_VERSION:-latest}"
 
 resolve_version() {
-  for i in {1..5}; do
-    VERSION_STR=$(curl --retry 3 -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*" || true)
-    if [ -n "${VERSION_STR}" ]; then
-      return
+    AUTH_OPTION=()
+    if [ -n "${INPUTS_GITHUB_TOKEN:-}" ]; then
+      AUTH_OPTION=(--header "Authorization: Bearer ${INPUTS_GITHUB_TOKEN:-}")
+    else
+      if [ "${GITHUB_SERVER_URL}" == "https://github.com" ]; then
+        AUTH_OPTION=(--header "Authorization: Bearer ${GITHUB_TOKEN:-}")
+      fi
     fi
-    echo "Attempt ${i} failed"
-  done
-  echo "::error:: Failed to get latest version from GitHub API"
-  exit 1
+    VERSION_STR=$(curl --retry 3 "${AUTH_OPTION[@]}" -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*" || true)
 }
 
 if [ "${VERSION_STR}" == 'latest' ] ; then

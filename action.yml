@@ -4,6 +4,9 @@ inputs:
   infer_version:
     description: 'infer version. [latest,vX.Y.Z]'
     default: 'latest'
+  github_token:
+    description: 'GitHub Token'
+    default: ''
 outputs:
   infer_version:
     description: 'installed infer version'
@@ -17,6 +20,8 @@ runs:
       id: resolve
       env:
         INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
+        INPUTS_GITHUB_TOKEN: ${{ inputs.github_token }}
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         "${GITHUB_ACTION_PATH}/resolve.sh"
     - name: Install Infer
@@ -24,6 +29,8 @@ runs:
       id: install
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
+        INPUTS_GITHUB_TOKEN: ${{ inputs.github_token }}
+        GITHUB_TOKEN: ${{ github.token }}
         INFER_BUILD_OPTIONS: --user-opam-switch
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
