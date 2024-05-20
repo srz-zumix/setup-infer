@@ -18,6 +18,7 @@ resolve_version() {
 if [ "${VERSION_STR}" == 'latest' ] ; then
   echo '::group::📖 Resolve infer version ...'
   resolve_version
+  echo "Resolved infer version: ${VERSION_STR}"
   echo '::endgroup::'
 fi
 
