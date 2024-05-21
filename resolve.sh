@@ -7,10 +7,6 @@ resolve_version() {
     AUTH_OPTION=()
     if [ -n "${INPUTS_GITHUB_TOKEN:-}" ]; then
       AUTH_OPTION=(--header "Authorization: Bearer ${INPUTS_GITHUB_TOKEN:-}")
-    else
-      if [ "${GITHUB_SERVER_URL}" == "https://github.com" ]; then
-        AUTH_OPTION=(--header "Authorization: Bearer ${GITHUB_TOKEN:-}")
-      fi
     fi
     VERSION_STR=$(curl --retry 3 "${AUTH_OPTION[@]}" -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*" || true)
 }

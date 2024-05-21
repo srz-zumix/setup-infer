@@ -5,8 +5,11 @@ inputs:
     description: 'infer version. [latest,vX.Y.Z]'
     default: 'latest'
   github_token:
-    description: 'GitHub Token'
-    default: ''
+    description: |
+      The token used to authenticate when fetching infer version.
+      When running this action on github.com, the default value is sufficient.
+      When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    default: ${{ github.server_url == 'https://github.com' && github.token || '' }}
 outputs:
   infer_version:
     description: 'installed infer version'
@@ -21,7 +24,6 @@ runs:
       env:
         INPUTS_INFER_VERSION: ${{ inputs.infer_version }}
         INPUTS_GITHUB_TOKEN: ${{ inputs.github_token }}
-        GITHUB_TOKEN: ${{ github.token }}
       run: |
         "${GITHUB_ACTION_PATH}/resolve.sh"
     - name: Install Infer
@@ -30,7 +32,6 @@ runs:
       env:
         INPUTS_INFER_VERSION: ${{ steps.resolve.outputs.version }}
         INPUTS_GITHUB_TOKEN: ${{ inputs.github_token }}
-        GITHUB_TOKEN: ${{ github.token }}
         INFER_BUILD_OPTIONS: --user-opam-switch
       run: |
         "${GITHUB_ACTION_PATH}/install.sh"
