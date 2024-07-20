@@ -12,10 +12,7 @@ jobs:
           - os: ubuntu-latest
             version: latest
           - os: macos-latest
-            version: 1.0.0
-          # macos only support version 1.0.0
-          # - os: macos-13
-          #   version: latest
+            version: latest
     steps:
     - name: clone
       uses: actions/checkout@v4
