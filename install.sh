@@ -17,23 +17,31 @@ INFER_INSTALLDIR="${RUNNER_TOOL_CACHE:-${INFER_TEMPDIR}}/infer"
 mkdir -p "${INFER_INSTALLDIR}"
 
 install_osx() {
-    if [ ! -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
+    ARCH="-arm64"
+    if [[${VERSION} == "v1.0.0"]]; then
+      ARCH=""
+    fi
+    if [ ! -f "${INFER_INSTALLDIR}/infer-osx${ARCH}-${VERSION}/bin/infer" ]; then
       cd "${INFER_INSTALLDIR}" || exit
-      (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx-${VERSION}.tar.xz" | tar -xvJ) || \
+      (curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-osx${ARCH}-${VERSION}.tar.xz" | tar -xvJ) || \
         echo "installed=false" >> "${GITHUB_OUTPUT}"
     fi
-    if [ -f "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin/infer" ]; then
-      echo "${INFER_INSTALLDIR}/infer-osx-${VERSION}/bin" >>"${GITHUB_PATH}"
+    if [ -f "${INFER_INSTALLDIR}/infer-osx${ARCH}-${VERSION}/bin/infer" ]; then
+      echo "${INFER_INSTALLDIR}/infer-osx${ARCH}-${VERSION}/bin" >>"${GITHUB_PATH}"
       echo "installed=true" >> "${GITHUB_OUTPUT}"
     fi
 }
 
 install_linux() {
-    if [ ! -f "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin/infer" ]; then
-      cd "${INFER_INSTALLDIR}" || exit
-      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux64-${VERSION}.tar.xz" | tar -xJ
+    ARCH="-x86_64"
+    if [[${VERSION} == "v1.0.0"]] || [[${VERSION} == "v1.1.0"]]; then
+      ARCH="64"
     fi
-    echo "${INFER_INSTALLDIR}/infer-linux64-${VERSION}/bin" >>"${GITHUB_PATH}"
+    if [ ! -f "${INFER_INSTALLDIR}/infer-linux${ARCH}-${VERSION}/bin/infer" ]; then
+      cd "${INFER_INSTALLDIR}" || exit
+      curl -sL "https://github.com/facebook/infer/releases/download/${VERSION}/infer-linux${ARCH}-${VERSION}.tar.xz" | tar -xJ
+    fi
+    echo "${INFER_INSTALLDIR}/infer-linux${ARCH}-${VERSION}/bin" >>"${GITHUB_PATH}"
     echo "installed=true" >> "${GITHUB_OUTPUT}"
 }
 
