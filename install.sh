@@ -18,7 +18,7 @@ mkdir -p "${INFER_INSTALLDIR}"
 
 install_osx() {
     ARCH="-arm64"
-    if [[${VERSION} == "v1.0.0"]]; then
+    if [[ ${VERSION} == "v1.0.0" ]]; then
       ARCH=""
     fi
     if [ ! -f "${INFER_INSTALLDIR}/infer-osx${ARCH}-${VERSION}/bin/infer" ]; then
@@ -34,7 +34,7 @@ install_osx() {
 
 install_linux() {
     ARCH="-x86_64"
-    if [[${VERSION} == "v1.0.0"]] || [[${VERSION} == "v1.1.0"]]; then
+    if [[ ${VERSION} == "v1.0.0" ]] || [[ ${VERSION} == "v1.1.0" ]]; then
       ARCH="64"
     fi
     if [ ! -f "${INFER_INSTALLDIR}/infer-linux${ARCH}-${VERSION}/bin/infer" ]; then
