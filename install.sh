@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+if [ -z "${INPUTS_INFER_VERSION:-}" ] || [ "${INPUTS_INFER_VERSION}" == 'v' ]; then
+  echo "::error::INPUTS_INFER_VERSION must not be empty or 'v'." >&2
+  exit 1
+fi
+
 source "${GITHUB_ACTION_PATH:-.}/utils.sh"
 source "${GITHUB_ACTION_PATH:-.}/resolve.sh"
 

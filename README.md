@@ -31,4 +31,4 @@ steps:
   - run: infer --version
 ```
 
-[infer]:https://github.com/facebook/infer
+[infer]:https://github.com/meta/infer

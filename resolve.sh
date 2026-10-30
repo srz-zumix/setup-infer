@@ -8,7 +8,15 @@ resolve_version() {
     if [ -n "${INPUTS_GITHUB_TOKEN:-}" ]; then
       AUTH_OPTION=(--header "Authorization: Bearer ${INPUTS_GITHUB_TOKEN:-}")
     fi
-    VERSION_STR=$(curl --retry 3 "${AUTH_OPTION[@]}" -s https://api.github.com/repos/facebook/infer/releases/latest | grep "tag_name" | grep -o "v[0-9.]*" || true)
+    local release
+    if ! release=$(curl --retry 3 "${AUTH_OPTION[@]}" --fail --silent --show-error --location https://api.github.com/repos/meta/infer/releases/latest); then
+      echo "::error::Failed to fetch the latest Infer release." >&2
+      return 1
+    fi
+    if ! VERSION_STR=$(jq -er '.tag_name | strings | select(test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))' <<< "${release}"); then
+      echo "::error::Failed to resolve a valid Infer version from the latest release." >&2
+      return 1
+    fi
 }
 
 if [ "${VERSION_STR}" == 'latest' ] ; then
@@ -19,5 +27,10 @@ if [ "${VERSION_STR}" == 'latest' ] ; then
 fi
 
 VERSION_NUMBER="${VERSION_STR##v}"
+if [ -z "${VERSION_NUMBER}" ]; then
+  echo "::error::Failed to resolve a non-empty infer version." >&2
+  exit 1
+fi
+
 VERSION="v${VERSION_NUMBER}"
 echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
