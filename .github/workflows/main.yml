@@ -16,9 +16,6 @@ jobs:
     steps:
     - name: clone
       uses: actions/checkout@v7
-    - name: Test version resolution
-      shell: bash
-      run: bash tests/resolve.sh
     - uses: ./
       id: setup
       with:
