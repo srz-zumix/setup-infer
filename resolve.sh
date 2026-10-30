@@ -4,7 +4,7 @@ set -euo pipefail
 VERSION_STR="${INPUTS_INFER_VERSION:-latest}"
 
 resolve_version() {
-    AUTH_OPTION=()
+    AUTH_OPTION=(--retry 3)
     if [ -n "${INPUTS_GITHUB_TOKEN:-}" ]; then
       AUTH_OPTION=(--header "Authorization: Bearer ${INPUTS_GITHUB_TOKEN:-}")
     fi
