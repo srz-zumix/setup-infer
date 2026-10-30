@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-if [ -z "${INPUTS_INFER_VERSION:-}" ]; then
-  echo "::error::INPUTS_INFER_VERSION must not be empty." >&2
+if [ -z "${INPUTS_INFER_VERSION:-}" ] || [ "${INPUTS_INFER_VERSION}" == 'v' ]; then
+  echo "::error::INPUTS_INFER_VERSION must not be empty or 'v'." >&2
   exit 1
 fi
 

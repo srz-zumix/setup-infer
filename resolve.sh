@@ -19,5 +19,10 @@ if [ "${VERSION_STR}" == 'latest' ] ; then
 fi
 
 VERSION_NUMBER="${VERSION_STR##v}"
+if [ -z "${VERSION_NUMBER}" ]; then
+  echo "::error::Failed to resolve a non-empty infer version." >&2
+  exit 1
+fi
+
 VERSION="v${VERSION_NUMBER}"
 echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
